@@ -16,7 +16,7 @@ jobs:
         github_access_token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Build Project
-      run: nix build
+      run: nix build -o game
 
   deploy:
     needs: build
