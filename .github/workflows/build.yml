@@ -16,7 +16,13 @@ jobs:
         github_access_token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Build Project
-      run: nix build -o game
+      run: nix build
+
+    - name: Upload static files as artifact
+      id: deployment
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: result/
 
   deploy:
     needs: build
