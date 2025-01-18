@@ -1,6 +1,9 @@
+WIDTH := 1920
+HEIGHT := 1080
+
 CC := gcc
 LDFLAGS := -lm -lraylib
-CFLAGS := -Wall -g
+CFLAGS := -Wall -g -DWIDTH=$(WIDTH) -DHEIGHT=$(HEIGHT)
 
 SRC_DIR := src
 BUILD_DIR := build
@@ -16,7 +19,7 @@ all: $(EXECUTABLE)
 
 web: CC:=emcc
 web: LDFLAGS := -0 -lm ./dependencies/lib/libraylib.a -s FORCE_FILESYSTEM=1 -s USE_GLFW=3 --shell-file ./minshell.html --preload-file ./gamedata
-web: CFLAGS := -DPLATFORM_WEB
+web: CFLAGS += -DPLATFORM_WEB
 web: $(OBJS)
 	@mkdir -p game
 	$(CC) -o game/index.html $(addprefix $(BUILD_DIR)/,$(notdir $^)) $(LDFLAGS)

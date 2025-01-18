@@ -1,6 +1,5 @@
 #include "application.h"
 #include "asset/asset_manager.h"
-#include "constant.h"
 #include "scene/game_scene.h"
 #include <raylib.h>
 #include <stdio.h>

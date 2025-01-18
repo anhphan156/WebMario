@@ -2,7 +2,6 @@
 #include "component/canimation.h"
 #include "component/cbbox.h"
 #include "component/ctexture.h"
-#include "constant.h"
 #include "ds/linkedlist.h"
 #include "entity/entity_manager.h"
 #include "level/level_parser.h"
