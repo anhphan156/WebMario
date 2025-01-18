@@ -17,5 +17,26 @@
       C_INCLUDE_PATH = "${pkgs.emscripten}/share/emscripten/cache/sysroot/include/";
       LD_LIBRARY_PATH = "${pkgs.emscripten}/share/emscripten/cache/sysroot/lib/";
     };
+
+    packages.${system}.default = pkgs.stdenv.mkDerivation {
+      pname = "Web Mario";
+      version = "1.0.0";
+      src = ./.;
+
+      buildInputs = with pkgs; [
+        raylib
+        emscripten
+      ];
+
+      buildPhase = ''
+        export HOME=$(mktemp -d)
+        make web
+      '';
+
+      installPhase = ''
+        mkdir -p $out
+        cp -r game/* $out
+      '';
+    };
   };
 }
