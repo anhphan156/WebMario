@@ -11,24 +11,28 @@ INCLUDE_DIR := include
 
 SRCS := $(shell find $(SRC_DIR) -name '*.c')
 OBJS := $(SRCS:%.c=%.o)
-EXECUTABLE = out
+EXECUTABLE = Mario
+DIST = game
 
 .PHONY: all clean web test
 
 all: $(EXECUTABLE)
 
+native: $(EXECUTABLE)
+
 web: CC:=emcc
 web: LDFLAGS := -0 -lm ./dependencies/lib/libraylib.a -s FORCE_FILESYSTEM=1 -s USE_GLFW=3 --shell-file ./minshell.html --preload-file ./gamedata
 web: CFLAGS += -DPLATFORM_WEB
 web: $(OBJS)
-	@mkdir -p game
-	$(CC) -o game/index.html $(addprefix $(BUILD_DIR)/,$(notdir $^)) $(LDFLAGS)
+	@mkdir -p $(DIST)
+	$(CC) -o $(DIST)/index.html $(addprefix $(BUILD_DIR)/,$(notdir $^)) $(LDFLAGS)
 
 test: CFLAGS := -DTEST
 test: $(EXECUTABLE)
 
 $(EXECUTABLE): $(OBJS)
-	$(CC) -o $@ $(addprefix $(BUILD_DIR)/,$(notdir $^)) $(LDFLAGS)
+	@mkdir -p $(DIST)
+	$(CC) -o $(DIST)/$@ $(addprefix $(BUILD_DIR)/,$(notdir $^)) $(LDFLAGS)
 
 $(OBJS): %.o: %.c
 	@mkdir -p $(BUILD_DIR)
@@ -45,7 +49,7 @@ leak-check:
 	valgrind --leak-check=full --log-file=leak.txt ./out
 
 clean:
-	rm -rf $(BUILD_DIR) $(EXECUTABLE) html/
+	rm -rf $(BUILD_DIR) $(EXECUTABLE) game
 
 raylib:
 	emcc -o build/rcore.o -c ./dependencies/raylib/src/rcore.c -Os -Wall -DPLATFORM_WEB -DGRAPHICS_API_OPENGL_ES2
